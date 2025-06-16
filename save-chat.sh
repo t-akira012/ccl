@@ -2,12 +2,12 @@
 
 # Claude Code会話ログ保存スクリプト
 # Usage: ./save-chat.sh [chat-title] [conversation-content]
+# Special: ./save-chat.sh --reset (セッションリセット)
 
 LOG_DIR="$(cd "$(dirname "$0")" && pwd)"
 DATE=$(date +%Y%m%d)
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 DATE_DIR="$LOG_DIR/$DATE"
-
 # ディレクトリ作成
 mkdir -p "$DATE_DIR"
 
@@ -30,6 +30,10 @@ if [ -z "$SAFE_TITLE" ] || [ "$SAFE_TITLE" = "-" ]; then
     SAFE_TITLE="claude-chat-$(date +%H%M%S)"
 fi
 
+# タイトルに時刻を先頭に追記（新規セッションの場合のみ）
+TIME_PREFIX=$(date +%H%M%S)
+SAFE_TITLE="${TIME_PREFIX}-${SAFE_TITLE}"
+
 FILENAME="$DATE_DIR/${SAFE_TITLE}.md"
 
 # 会話内容の処理（here documentを使用）
@@ -42,8 +46,11 @@ fi
 
 # ファイルが存在しない場合は新規作成
 if [ ! -f "$FILENAME" ]; then
+    # ファイル名からタイトル部分を抽出（hhmmss-を除去）
+    BASENAME=$(basename "$FILENAME" .md)
+    DISPLAY_TITLE=$(echo "$BASENAME" | sed 's/^[0-9]\{6\}-//')
     cat > "$FILENAME" <<HEADER_EOF
-# $CHAT_TITLE
+# $DISPLAY_TITLE
 
 HEADER_EOF
 fi
