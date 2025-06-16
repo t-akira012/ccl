@@ -3,7 +3,7 @@
 # Claude Code会話ログ検索
 # Usage: ./search-chats.sh [keyword]
 
-LOG_DIR="/Users/t-akira012/tmp/claude-code-log"
+LOG_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 if [ -z "$1" ]; then
     echo "検索キーワードを指定してください:"

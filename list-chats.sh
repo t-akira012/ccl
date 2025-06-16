@@ -3,7 +3,7 @@
 # Claude Code会話ログ一覧表示
 # Usage: ./list-chats.sh [yyyymmdd]
 
-LOG_DIR="/Users/t-akira012/tmp/claude-code-log"
+LOG_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 if [ -n "$1" ]; then
     TARGET_DATE="$1"
