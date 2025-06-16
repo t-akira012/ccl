@@ -13,7 +13,7 @@ commit: # sync to git
 
 # Docker Compose コマンド
 up:
-	docker compose up
+	docker compose up -d
 
 down:
 	docker compose down
