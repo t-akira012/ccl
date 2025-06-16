@@ -23,14 +23,15 @@ if [ -z "$SAFE_TITLE" ] || [ "$SAFE_TITLE" = "-" ]; then
     SAFE_TITLE="claude-chat-$(date +%H%M%S)"
 fi
 
-# 既存ファイルを検索（同じタイトルで時刻が違うファイル）
-EXISTING_FILE=$(find "$DATE_DIR" -name "*-${SAFE_TITLE}.md" 2>/dev/null | head -1)
+# セッション継続の判定（同じタイトルの既存ファイルを検索）
+EXISTING_FILE=$(find "$DATE_DIR" -name "*-${SAFE_TITLE}.md" 2>/dev/null | sort | tail -1)
 
 if [ -n "$EXISTING_FILE" ]; then
-    # 既存ファイルが見つかった場合はそのファイル名を使用
+    # 既存ファイルが見つかった場合、意味内容による同一セッション判定
+    # 同じタイトル = 同じ話題として既存ファイルに追記
     FILENAME="$EXISTING_FILE"
 else
-    # 新規ファイル作成時のみタイムスタンプ追加
+    # 既存ファイルが見つからない場合は新規作成
     if [[ ! "$SAFE_TITLE" =~ ^[0-9]{6}- ]]; then
         TIME_PREFIX=$(date +%H%M%S)
         SAFE_TITLE="${TIME_PREFIX}-${SAFE_TITLE}"
