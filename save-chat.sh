@@ -30,9 +30,12 @@ if [ -z "$SAFE_TITLE" ] || [ "$SAFE_TITLE" = "-" ]; then
     SAFE_TITLE="claude-chat-$(date +%H%M%S)"
 fi
 
-# タイトルに時刻を先頭に追記（新規セッションの場合のみ）
-TIME_PREFIX=$(date +%H%M%S)
-SAFE_TITLE="${TIME_PREFIX}-${SAFE_TITLE}"
+# 既存のhhmmss-プレフィックスが付いているかチェック
+if [[ ! "$SAFE_TITLE" =~ ^[0-9]{6}- ]]; then
+    # タイトルに時刻を先頭に追記（新規セッションの場合のみ）
+    TIME_PREFIX=$(date +%H%M%S)
+    SAFE_TITLE="${TIME_PREFIX}-${SAFE_TITLE}"
+fi
 
 FILENAME="$DATE_DIR/${SAFE_TITLE}.md"
 
