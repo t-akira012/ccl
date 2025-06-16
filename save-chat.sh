@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Claude Code会話ログ保存スクリプト
-# Usage: ./save-chat.sh [chat-title] <<'CONTENT_EOF'
+# Usage: printf '%s\n' "content" | ./save-chat.sh [chat-title]
 # conversation content here
 # CONTENT_EOF
 

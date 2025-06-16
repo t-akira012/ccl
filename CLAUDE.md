@@ -65,9 +65,7 @@
 1. **実行タイミング**: すべての回答の最後（例外なし）
 2. **実行コマンド**: 
    ```bash
-   ./save-chat.sh "[タイトル]" <<'CONTENT_EOF'
-   [会話内容]
-   CONTENT_EOF
+   printf '%s\n' "会話内容" | ./save-chat.sh [chat-title]
    ```
 3. **会話内容の形式**:
    - Claudeはユーザーと対話し、その内容をMarkdown形式で出力
