@@ -54,4 +54,4 @@ $CONVERSATION_CONTENT
 
 CONTENT_EOF
 
-echo "会話ログが保存されました: $FILENAME"
+echo "会話ログが保存されました: $SAFE_TITLE"
