@@ -1,3 +1,5 @@
+run: up dev
+
 # Git管理
 commit: # sync to git
 	git pull origin main
@@ -11,7 +13,7 @@ commit: # sync to git
 
 # Docker Compose コマンド
 up:
-	docker compose up -d
+	docker compose up
 
 down:
 	docker compose down
@@ -19,18 +21,19 @@ down:
 build:
 	docker compose build
 
+build-nocache:
+	docker compose build --no-cache
+
+
 logs:
 	docker compose logs -f
 
-shell:
-	docker compose exec claude-code-log bash
-
-# 管理コマンド
-clean:
-	docker compose down --volumes --remove-orphans
-
 restart:
 	docker compose restart
+
+# 開発環境アクセス
+dev:
+	docker compose exec claude-code-log bash
 
 # 会話ログ関連
 save:

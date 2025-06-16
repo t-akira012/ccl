@@ -23,9 +23,8 @@ if [ -z "$SAFE_TITLE" ] || [ "$SAFE_TITLE" = "-" ]; then
     SAFE_TITLE="claude-chat-$(date +%H%M%S)"
 fi
 
-# 既存のhhmmss-プレフィックスが付いているかチェック
+# hhmmss-プレフィックスが既に存在しない場合のみ追加
 if [[ ! "$SAFE_TITLE" =~ ^[0-9]{6}- ]]; then
-    # タイトルに時刻を先頭に追記（新規セッションの場合のみ）
     TIME_PREFIX=$(date +%H%M%S)
     SAFE_TITLE="${TIME_PREFIX}-${SAFE_TITLE}"
 fi
