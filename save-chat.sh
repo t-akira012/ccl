@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Claude Code会話ログ保存スクリプト
-# Usage: ./save-chat.sh [chat-title] [conversation-content]
-# Special: ./save-chat.sh --reset (セッションリセット)
+# Usage: ./save-chat.sh [chat-title] <<'CONTENT_EOF'
+# conversation content here
+# CONTENT_EOF
 
 LOG_DIR="$(cd "$(dirname "$0")" && pwd)"
 DATE=$(date +%Y%m%d)
@@ -12,15 +13,7 @@ DATE_DIR="$LOG_DIR/$DATE"
 mkdir -p "$DATE_DIR"
 
 # チャットタイトルの処理
-if [ -n "$1" ]; then
-    CHAT_TITLE="$1"
-else
-    echo "会話のタイトルを入力してください:"
-    read CHAT_TITLE
-    if [ -z "$CHAT_TITLE" ]; then
-        CHAT_TITLE="claude-chat-$(date +%H%M%S)"
-    fi
-fi
+CHAT_TITLE="${1:-claude-chat-$(date +%H%M%S)}"
 
 # ファイル名の安全化（日本語対応）
 SAFE_TITLE=$(echo "$CHAT_TITLE" | sed 's/ /-/g' | tr -d '/\\:*?"<>|')
@@ -39,13 +32,7 @@ fi
 
 FILENAME="$DATE_DIR/${SAFE_TITLE}.md"
 
-# 会話内容の処理（here documentを使用）
-if [ -n "$2" ]; then
-    CONVERSATION_CONTENT="$2"
-else
-    echo "会話内容を入力してください（Ctrl+Dで終了）:"
-    CONVERSATION_CONTENT=$(cat)
-fi
+# 会話内容の処理は直接$2を使用
 
 # ファイルが存在しない場合は新規作成
 if [ ! -f "$FILENAME" ]; then
@@ -58,10 +45,8 @@ if [ ! -f "$FILENAME" ]; then
 HEADER_EOF
 fi
 
-# 会話内容を追記（here documentを使用）
-cat >> "$FILENAME" <<CONTENT_EOF
-$CONVERSATION_CONTENT
-
-CONTENT_EOF
+# 会話内容を標準入力から読み取って追記
+cat >> "$FILENAME"
+echo >> "$FILENAME"
 
 echo "会話ログが保存されました: $FILENAME"

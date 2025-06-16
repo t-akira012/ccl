@@ -1,0 +1,13 @@
+services:
+  claude-code-log:
+    image: ubuntu:22.04
+    container_name: claude-code-log
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: ["tail", "-f", "/dev/null"]
+    tty: true
+    stdin_open: true
+    environment:
+      - LANG=ja_JP.UTF-8
+      - LC_ALL=ja_JP.UTF-8
