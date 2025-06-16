@@ -32,36 +32,26 @@ fi
 
 FILENAME="$DATE_DIR/${SAFE_TITLE}.md"
 
-# 会話内容の処理
+# 会話内容の処理（here documentを使用）
 if [ -n "$2" ]; then
     CONVERSATION_CONTENT="$2"
 else
-    echo "会話内容を入力してください（終了するには空行を入力）:"
-    CONVERSATION_CONTENT=""
-    while IFS= read -r line; do
-        if [ -z "$line" ]; then
-            break
-        fi
-        CONVERSATION_CONTENT="${CONVERSATION_CONTENT}${line}\n"
-    done
+    echo "会話内容を入力してください（Ctrl+Dで終了）:"
+    CONVERSATION_CONTENT=$(cat)
 fi
 
-# ファイルが存在しない場合は新規作成、存在する場合は追記
+# ファイルが存在しない場合は新規作成
 if [ ! -f "$FILENAME" ]; then
-    cat > "$FILENAME" << EOF
+    cat > "$FILENAME" <<HEADER_EOF
 # $CHAT_TITLE
 
-EOF
+HEADER_EOF
 fi
 
 # 会話内容を追記（here documentを使用）
-cat >> "$FILENAME" << EOF
+cat >> "$FILENAME" <<CONTENT_EOF
 $CONVERSATION_CONTENT
-EOF
+
+CONTENT_EOF
 
 echo "会話ログが保存されました: $FILENAME"
-
-# 最近の会話リストを表示
-echo ""
-echo "今日の会話一覧:"
-ls -la "$DATE_DIR" | grep -E '\.md$' | awk '{print $9}' | sed 's/\.md$//'
