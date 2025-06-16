@@ -90,8 +90,11 @@ claude-code-log/
 
 ### カスタムコマンド
 - `save-chat [title]`: 現在の会話をログに保存
-- `list-chats [date]`: 指定日（または今日）の会話一覧を表示
-- `search-chats [keyword]`: 会話ログから検索
+- `list [date]`: 指定日（または今日）の会話一覧を表示
+- `search [keyword]`: 会話ログから検索
+- `showlog`: 最新のログファイルを表示（会話ログ保存モードをオフにして実行）
+- `stop`: 会話ログ保存モードをオフ - 「OFF」とだけ返答
+- `start`: 会話ログ保存モードをオン - 「ON」とだけ返答
 
 ### ログフォーマット
 ```markdown
