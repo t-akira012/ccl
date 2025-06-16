@@ -23,13 +23,20 @@ if [ -z "$SAFE_TITLE" ] || [ "$SAFE_TITLE" = "-" ]; then
     SAFE_TITLE="claude-chat-$(date +%H%M%S)"
 fi
 
-# hhmmss-プレフィックスが既に存在しない場合のみ追加
-if [[ ! "$SAFE_TITLE" =~ ^[0-9]{6}- ]]; then
-    TIME_PREFIX=$(date +%H%M%S)
-    SAFE_TITLE="${TIME_PREFIX}-${SAFE_TITLE}"
-fi
+# 既存ファイルを検索（同じタイトルで時刻が違うファイル）
+EXISTING_FILE=$(find "$DATE_DIR" -name "*-${SAFE_TITLE}.md" 2>/dev/null | head -1)
 
-FILENAME="$DATE_DIR/${SAFE_TITLE}.md"
+if [ -n "$EXISTING_FILE" ]; then
+    # 既存ファイルが見つかった場合はそのファイル名を使用
+    FILENAME="$EXISTING_FILE"
+else
+    # 新規ファイル作成時のみタイムスタンプ追加
+    if [[ ! "$SAFE_TITLE" =~ ^[0-9]{6}- ]]; then
+        TIME_PREFIX=$(date +%H%M%S)
+        SAFE_TITLE="${TIME_PREFIX}-${SAFE_TITLE}"
+    fi
+    FILENAME="$DATE_DIR/${SAFE_TITLE}.md"
+fi
 
 # 会話内容の処理は直接$2を使用
 
