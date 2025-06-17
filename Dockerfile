@@ -18,7 +18,13 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     # ブラウザ認証用
     xdg-utils \
+    # タイムゾーン設定用
+    tzdata \
     && rm -rf /var/lib/apt/lists/*
+
+# JST（日本標準時）を設定
+ENV TZ=Asia/Tokyo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Claude Code CLIをグローバルインストール
 RUN npm install -g @anthropic-ai/claude-code
