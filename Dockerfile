@@ -1,4 +1,3 @@
-# Claude Code Development Environment
 FROM node:lts
 
 # 追加パッケージをインストール
@@ -20,7 +19,9 @@ RUN apt-get update && apt-get install -y \
     xdg-utils \
     # タイムゾーン設定用
     tzdata \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    # uvx
+    && curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # JST（日本標準時）を設定
 ENV TZ=Asia/Tokyo
@@ -47,6 +48,15 @@ USER developer
 
 # Claude Code設定ディレクトリを作成
 RUN mkdir -p /home/developer/.claude
+
+# bashエイリアスを追加
+RUN <<-EOF
+echo "alias ccc='claude'" >> /home/developer/.bashrc
+echo "alias cca='claude auth'" >> /home/developer/.bashrc
+echo "alias ccd='claude --dangerously-skip-permissions'" >> /home/developer/.bashrc
+echo "export CLAUDE_CONFIG_DIR=$HOME/.config/claude" >> /home/developer/.bashrc
+echo "source $HOME/.local/bin/env" >> /home/developer/.bashrc
+EOF
 
 # Claude Codeの動作確認
 RUN claude --version || echo "Claude Code installed, auth required"
