@@ -8,3 +8,6 @@ commit: # sync to git
 	else \
 		echo "no changes." ; \
 	fi
+
+deploy:
+	ln -si $${PWD} $$HOME/ccc/.ccl
