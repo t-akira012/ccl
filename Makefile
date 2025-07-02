@@ -10,7 +10,4 @@ commit: # sync to git
 	fi
 
 deploy:
-	export CURRENT_DIR=$${PWD}
-	echo create-reverce-symlink
-	mv $$CURRENT_DIR $$HOME/ccc/.ccl
-	ln -si $$HOME/ccc/.ccl $$CURRENT_DIR
+	export CURRENT_DIR=$$(pwd) && echo $$CURRENT_DIR && echo create-reverce-symlink && mv $$CURRENT_DIR $$HOME/ccc/.ccl && ln -si $$HOME/ccc/.ccl $${CURRENT_DIR}
